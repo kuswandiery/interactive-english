@@ -3,30 +3,45 @@ import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 
-interface PricingCardData {
-  plan: string
+export interface PricingCardData {
+  name: string
   price: number
-  billing: string
+  period: string
+  description: string
   features: string[]
-  popular?: boolean
+  highlighted?: boolean
+  cta: string
 }
 
-export function PricingCard({ plan, price, billing, features, popular = false }: PricingCardData) {
+export function PricingCard({
+  name,
+  price,
+  period,
+  description,
+  features,
+  highlighted = false,
+  cta,
+  onCta,
+}: PricingCardData & { onCta?: () => void }) {
   return (
     <Card
       interactive
-      className={`flex h-full flex-col p-6 ${popular ? 'ring-2 ring-primary' : ''}`}
+      className={`flex h-full flex-col p-6 ${highlighted ? 'ring-2 ring-primary' : ''}`}
     >
       <div className="flex items-center justify-between">
-        <h3 className="font-heading text-lg font-semibold text-secondary">{plan}</h3>
-        {popular && <Badge variant="primary">Popular</Badge>}
+        <h3 className="font-heading text-lg font-semibold text-secondary">{name}</h3>
+        {highlighted && <Badge variant="primary">Most Popular</Badge>}
       </div>
+
+      <p className="mt-2 text-sm text-muted">{description}</p>
 
       <div className="mt-4 flex items-end gap-1">
         <span className="font-heading text-4xl font-bold text-secondary">
           {price === 0 ? 'Free' : `$${price}`}
         </span>
-        {price > 0 && <span className="pb-1 text-sm text-muted">/{billing}</span>}
+        {price > 0 && (
+          <span className="pb-1 text-sm text-muted">/{period === 'one-time' ? 'once' : period}</span>
+        )}
       </div>
 
       <ul className="mt-6 flex-1 space-y-3">
@@ -38,8 +53,8 @@ export function PricingCard({ plan, price, billing, features, popular = false }:
         ))}
       </ul>
 
-      <Button variant={popular ? 'primary' : 'outline'} className="mt-6 w-full">
-        {popular ? 'Get Started' : 'Join Now'}
+      <Button variant={highlighted ? 'primary' : 'outline'} className="mt-6 w-full" onClick={onCta}>
+        {cta}
       </Button>
     </Card>
   )

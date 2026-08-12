@@ -1,15 +1,15 @@
 import { Accordion } from '@/components/ui/Accordion'
 import { faqs } from '@/data/faqs'
-import type { FaqItem } from '@/data/faqs'
+import type { FaqItem } from '@/types/card'
 
 export function FaqPreview() {
-  const items: { value: string; title: string; content: React.ReactNode }[] = faqs.map(
-    (faq: FaqItem) => ({
-      value: faq.question.split(' ')[0].toLowerCase(),
+  const items: { value: string; title: string; content: React.ReactNode }[] = faqs
+    .slice(0, 4)
+    .map((faq: FaqItem) => ({
+      value: faq.id,
       title: faq.question,
       content: faq.answer,
-    }),
-  )
+    }))
 
   return (
     <section className="bg-surface">

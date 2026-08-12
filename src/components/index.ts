@@ -24,3 +24,6 @@ export { StatCard } from '@/components/dashboard/StatCard'
 
 export { Accordion } from '@/components/ui/Accordion'
 export { Breadcrumb } from '@/components/ui/Breadcrumb'
+export { SectionHeader } from '@/components/ui/SectionHeader'
+export { BlogCard } from '@/components/blog/BlogCard'
+export { ContactInfo } from '@/components/contact/ContactInfo'

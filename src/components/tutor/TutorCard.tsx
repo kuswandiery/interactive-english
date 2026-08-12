@@ -1,17 +1,30 @@
-import { Star, Users, Award } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Star, Award, Globe } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 
-interface TutorCardData {
+export interface TutorCardData {
+  id?: string
   name: string
-  specialty: string
+  role: string
+  specialization: string
   experience: number
   rating: number
-  students: number
+  reviewCount: number
+  languages?: string[]
+  students?: number
 }
 
-export function TutorCard({ name, specialty, experience, rating, students }: TutorCardData) {
+export function TutorCard({
+  id,
+  name,
+  role,
+  specialization,
+  experience,
+  rating,
+  languages,
+}: TutorCardData) {
   const initials = name
     .split(' ')
     .map((p) => p[0])
@@ -25,17 +38,20 @@ export function TutorCard({ name, specialty, experience, rating, students }: Tut
       </div>
 
       <h3 className="mt-4 font-heading text-lg font-semibold text-secondary">{name}</h3>
+      <p className="text-sm text-muted">{role}</p>
       <Badge variant="outline" className="mt-2">
-        {specialty}
+        {specialization}
       </Badge>
 
       <div className="mt-4 flex flex-col items-center gap-1 text-sm text-muted">
         <span className="flex items-center gap-1">
           <Award className="h-4 w-4" /> {experience} years experience
         </span>
-        <span className="flex items-center gap-1">
-          <Users className="h-4 w-4" /> {students} students
-        </span>
+        {languages && languages.length > 0 && (
+          <span className="flex items-center gap-1">
+            <Globe className="h-4 w-4" /> {languages.length} languages
+          </span>
+        )}
       </div>
 
       <span className="mt-3 flex items-center gap-1 text-sm">
@@ -43,9 +59,11 @@ export function TutorCard({ name, specialty, experience, rating, students }: Tut
         <span className="font-semibold text-secondary">{rating.toFixed(1)}</span>
       </span>
 
-      <Button variant="outline" className="mt-6 w-full">
-        View Profile
-      </Button>
+      <Link to={id ? `/tutors/${id}` : '/tutors'} className="mt-6 w-full">
+        <Button variant="outline" className="w-full">
+          View Profile
+        </Button>
+      </Link>
     </Card>
   )
 }

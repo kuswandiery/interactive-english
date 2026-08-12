@@ -1,0 +1,161 @@
+import type { BlogPost, BlogCategory } from '@/types/blog'
+
+export const blogCategories: BlogCategory[] = [
+  { label: 'English Learning', value: 'English Learning' },
+  { label: 'Grammar', value: 'Grammar' },
+  { label: 'Vocabulary', value: 'Vocabulary' },
+  { label: 'Speaking', value: 'Speaking' },
+  { label: 'Business English', value: 'Business English' },
+  { label: 'Exam Preparation', value: 'Exam Preparation' },
+  { label: 'Study Tips', value: 'Study Tips' },
+]
+
+export const blogPosts: BlogPost[] = [
+  {
+    id: 'b1',
+    slug: 'how-to-learn-english-with-confidence',
+    title: 'How to Learn English with Confidence',
+    excerpt:
+      'Confidence is key when learning a language. Discover practical steps to speak English without fear of making mistakes.',
+    content: [
+      'Confidence often matters more than grammar when you first start speaking a new language. Many learners know the right words but freeze when they need to say them out loud.',
+      'The best way to build confidence is to practice in low-pressure situations. Start by speaking to yourself, recording short voice notes, and repeating phrases you hear in lessons.',
+      'Make small, consistent progress a daily goal. Even ten minutes of practice each day helps your brain form stronger language habits than a long session once a week.',
+      'Remember that mistakes are part of learning. Every error gives you useful feedback. Focus on communicating your idea, not on being perfect.',
+      'Conclusion: Confidence grows through practice, patience, and a willingness to make mistakes. Start small, practice regularly, and your speaking will improve over time.',
+    ],
+    category: 'English Learning',
+    author: 'Sarah Johnson',
+    date: '2026-01-12',
+    readTime: '5 min',
+    featured: true,
+  },
+  {
+    id: 'b2',
+    slug: 'common-english-grammar-mistakes-to-avoid',
+    title: 'Common English Grammar Mistakes to Avoid',
+    excerpt:
+      'A look at frequent grammar errors learners make and simple tips to correct them in your writing and speaking.',
+    content: [
+      'Whether you are writing an email or having a conversation, small grammar mistakes can distract from your message. Here are some of the most common ones to watch for.',
+      'Subject–verb agreement: remember that singular subjects need singular verbs. For example, "She goes" not "She go", and "The team is" not "The team are" in most formal English.',
+      'Tense consistency: avoid switching between past and present tense in the same sentence unless it is intentional. Keep your narrative in one tense to stay clear.',
+      'Prepositions are tricky because they often do not translate directly. Learn prepositions in phrases, such as "interested in", "good at", and "afraid of", rather than in isolation.',
+      'Conclusion: By focusing on these common problem areas and reading your work aloud, you will notice and fix many mistakes before they become habits.',
+    ],
+    category: 'Grammar',
+    author: 'Michael Chen',
+    date: '2026-01-05',
+    readTime: '6 min',
+  },
+  {
+    id: 'b3',
+    slug: 'build-your-vocabulary-with-these-tips',
+    title: 'Build Your Vocabulary with These Practical Tips',
+    excerpt:
+      'Learn how to grow your active vocabulary faster with spaced repetition, context, and real-world use.',
+    content: [
+      'A wide vocabulary lets you express precise ideas instead of searching for words. But memorizing long lists rarely works. You need a system.',
+      'Learn words in context. Instead of a single word, learn a short phrase that shows how the word is used. This helps you remember meaning and grammar together.',
+      'Use spaced repetition. Review new words after one day, then three days, then a week. Repeating at increasing intervals moves words into your long-term memory.',
+      'Use your new words actively. Write a sentence, send a message, or use the word in conversation. Active use is what turns passive vocabulary into active vocabulary.',
+      'Conclusion: Focus on context, spaced review, and real usage. With consistency, your vocabulary will grow steadily and naturally.',
+    ],
+    category: 'Vocabulary',
+    author: 'Sophia Lee',
+    date: '2025-12-28',
+    readTime: '5 min',
+  },
+  {
+    id: 'b4',
+    slug: 'improve-your-pronunciation-today',
+    title: 'Improve Your Pronunciation with These Techniques',
+    excerpt:
+      'Clear pronunciation makes you easier to understand. Try these techniques to sound more natural and confident.',
+    content: [
+      'Pronunciation is about more than individual sounds. Rhythm, stress, and intonation help you sound natural and be understood clearly.',
+      'Listen to native speakers and imitate the way they stress important words. English puts stress on the content words like nouns and verbs, not on small grammar words.',
+      'Practice the sounds that are difficult for you in isolation, then in words, then in whole sentences. Slow, careful practice builds muscle memory.',
+      'Record yourself speaking and compare it to a model. You will hear differences you cannot notice while you are speaking.',
+      'Conclusion: Focus on stress and intonation, practice difficult sounds, and record yourself regularly. Clear pronunciation is a habit you can build.',
+    ],
+    category: 'Speaking',
+    author: 'David Miller',
+    date: '2025-12-20',
+    readTime: '6 min',
+  },
+  {
+    id: 'b5',
+    slug: 'business-english-email-writing-guide',
+    title: 'A Simple Guide to Writing Professional Business Emails',
+    excerpt:
+      'Good business emails are clear and polite. Learn the structure that professionals use every day.',
+    content: [
+      'Professional emails save time for everyone when they are clear and well-structured. A good email has a clear subject, a polite greeting, a focused body, and a clear next step.',
+      'Subject lines matter. Write a short subject that tells the reader what the email is about, such as "Meeting follow-up" or "Question about the report".',
+      'Keep your body short. Use a friendly opening, state your main point early, and ask for a clear action. Avoid long paragraphs and unnecessary details.',
+      'Close politely with a thank-you or a next step, then sign off with a professional closing such as "Best regards" followed by your name.',
+      'Conclusion: Clear structure, a useful subject line, and a specific next step make your emails effective and professional.',
+    ],
+    category: 'Business English',
+    author: 'Emily Davis',
+    date: '2025-12-15',
+    readTime: '7 min',
+  },
+  {
+    id: 'b6',
+    slug: 'ielts-test-day-strategies',
+    title: 'IELTS Test Day: Strategies to Stay Calm and Score Higher',
+    excerpt:
+      'A calm, focused approach on test day can improve your score. Here are strategies to help you perform at your best.',
+    content: [
+      'Many learners score lower than they are capable of simply because test-day nerves get in the way. Preparation includes knowing how to manage the day itself.',
+      'Get a good night of sleep and eat a light meal before the test. Being physically comfortable helps you stay mentally focused.',
+      'Manage your time in each section. Keep an eye on the clock, and if a question is taking too long, move on and return to it if you have time.',
+      'For speaking, answer the question you are asked, give a reason or example, and stay calm even if you make a mistake. Keep talking—fluency matters.',
+      'Conclusion: Test day success is about preparation plus composure. Sleep well, manage time, and stay calm to let your best English shine through.',
+    ],
+    category: 'Exam Preparation',
+    author: 'David Miller',
+    date: '2025-12-01',
+    readTime: '6 min',
+    featured: true,
+  },
+  {
+    id: 'b7',
+    slug: 'daily-habits-to-master-english',
+    title: '7 Daily Habits That Will Help You Master English',
+    excerpt:
+      'Small daily habits add up to big progress. Here are seven habits that keep you learning every single day.',
+    content: [
+      'You do not need hours each day to master English. Short, consistent daily habits are more effective than occasional long study sessions.',
+      '1. Listen to English every day: podcasts, songs, or short videos keep your ears used to the sounds and rhythm of the language.',
+      '2. Read a little each day: even a short article builds vocabulary and shows correct sentence patterns.',
+      '3. Speak daily: describe your day in English out loud, or have a short conversation. Use it or lose it.',
+      '4. Keep a journal: write three sentences about your day in English to practice writing and reinforce what you learned.',
+      'Conclusion: Combine listening, reading, speaking, and writing in small daily doses, and your English will improve steadily and naturally.',
+    ],
+    category: 'Study Tips',
+    author: 'Sarah Johnson',
+    date: '2025-11-22',
+    readTime: '5 min',
+  },
+  {
+    id: 'b8',
+    slug: 'english-for-kids-homeschool-tips',
+    title: 'English for Kids: Fun Learning Tips for Home',
+    excerpt:
+      'Make English fun for young learners with games, songs, and simple daily routines that build confidence.',
+    content: [
+      'Children learn best when they are having fun. Turning English into a game or a song is far more effective than memorizing lists.',
+      'Use everyday routines. Label objects around the house, sing songs during car rides, and count toys in English together.',
+      'Keep sessions short and playful. Young minds focus best in short bursts, and a positive experience matters more than long lessons.',
+      'Encourage and celebrate effort. Praise your child for trying new words, and repeat phrases regularly so they become familiar.',
+      'Conclusion: With play, routine, and encouragement, kids can build a strong and confident English foundation at home.',
+    ],
+    category: 'English Learning',
+    author: 'Rachel Green',
+    date: '2025-11-10',
+    readTime: '4 min',
+  },
+]

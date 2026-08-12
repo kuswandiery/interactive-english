@@ -6,9 +6,17 @@ const HomePage = lazy(() => import('@/pages/HomePage'))
 const ComponentsShowcase = lazy(() => import('@/pages/ComponentsShowcase'))
 const CoursesPage = lazy(() => import('@/pages/CoursesPage'))
 const CourseDetailPage = lazy(() => import('@/pages/CourseDetailPage'))
+const TutorsPage = lazy(() => import('@/pages/TutorsPage'))
+const TutorDetailPage = lazy(() => import('@/pages/TutorDetailPage'))
+const PricingPage = lazy(() => import('@/pages/PricingPage'))
+const FaqPage = lazy(() => import('@/pages/FaqPage'))
+const AboutPage = lazy(() => import('@/pages/AboutPage'))
+const ContactPage = lazy(() => import('@/pages/ContactPage'))
+const BlogPage = lazy(() => import('@/pages/BlogPage'))
+const BlogDetailPage = lazy(() => import('@/pages/BlogDetailPage'))
 const Placeholder = lazy(() => import('@/pages/Placeholder'))
 
-const placeholderPaths = ['tutors', 'pricing', 'about', 'blog', 'contact', 'login', 'register']
+const placeholderPaths = ['login', 'register']
 
 export function AppRouter() {
   return (
@@ -19,6 +27,14 @@ export function AppRouter() {
           <Route path="showcase" element={<ComponentsShowcase />} />
           <Route path="courses" element={<CoursesPage />} />
           <Route path="courses/:slug" element={<CourseDetailPage />} />
+          <Route path="tutors" element={<TutorsPage />} />
+          <Route path="tutors/:id" element={<TutorDetailPage />} />
+          <Route path="pricing" element={<PricingPage />} />
+          <Route path="faq" element={<FaqPage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="contact" element={<ContactPage />} />
+          <Route path="blog" element={<BlogPage />} />
+          <Route path="blog/:slug" element={<BlogDetailPage />} />
           {placeholderPaths.map((path) => (
             <Route key={path} path={path} element={<Placeholder />} />
           ))}

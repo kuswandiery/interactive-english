@@ -31,11 +31,16 @@ export interface CourseData {
 export interface TutorData {
   id: string
   name: string
-  specialty: string
+  role: string
+  photo?: string
+  bio: string
+  specialization: string
   experience: number
   rating: number
-  students: number
-  photo?: string
+  reviewCount: number
+  languages: string[]
+  availability: string
+  courses: string[]
 }
 
 export interface TestimonialData {
@@ -49,11 +54,20 @@ export interface TestimonialData {
 
 export interface PricingPlan {
   id: string
-  plan: string
+  name: string
   price: number
-  billing: string
+  period: string
+  description: string
   features: string[]
-  popular?: boolean
+  highlighted?: boolean
+  cta: string
+}
+
+export interface FaqItem {
+  id: string
+  category: string
+  question: string
+  answer: string
 }
 
 export interface Statistic {

@@ -4,15 +4,31 @@ import { GraduationCap } from 'lucide-react'
 const columns = [
   {
     title: 'Courses',
-    links: ['General English', 'Conversation', 'Business English', 'IELTS', 'TOEFL'],
+    links: [
+      { label: 'General English', to: '/courses' },
+      { label: 'Conversation', to: '/courses' },
+      { label: 'Business English', to: '/courses' },
+      { label: 'IELTS', to: '/courses' },
+      { label: 'TOEFL', to: '/courses' },
+    ],
   },
   {
     title: 'Company',
-    links: ['About', 'Tutors', 'Pricing', 'Blog', 'Contact'],
+    links: [
+      { label: 'About', to: '/about' },
+      { label: 'Tutors', to: '/tutors' },
+      { label: 'Pricing', to: '/pricing' },
+      { label: 'Blog', to: '/blog' },
+      { label: 'Contact', to: '/contact' },
+    ],
   },
   {
     title: 'Support',
-    links: ['FAQ', 'Help Center', 'Terms', 'Privacy'],
+    links: [
+      { label: 'FAQ', to: '/faq' },
+      { label: 'Courses', to: '/courses' },
+      { label: 'Contact', to: '/contact' },
+    ],
   },
 ]
 
@@ -39,10 +55,10 @@ export function Footer() {
           <div key={col.title}>
             <h4 className="mb-4 text-sm font-semibold text-white">{col.title}</h4>
             <ul className="space-y-2 text-sm">
-              {col.links.map((item) => (
-                <li key={item}>
-                  <Link to="#" className="text-slate-400 transition-colors hover:text-white">
-                    {item}
+              {col.links.map((link) => (
+                <li key={link.label}>
+                  <Link to={link.to} className="text-slate-400 transition-colors hover:text-white">
+                    {link.label}
                   </Link>
                 </li>
               ))}
