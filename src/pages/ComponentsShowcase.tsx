@@ -50,13 +50,16 @@ const filterItems = [
 ]
 
 const demoCourse: CourseCardData = {
+  id: 'general-english',
+  slug: 'general-english',
   title: 'General English',
   level: 'Beginner',
-  description: 'Build a strong foundation in everyday English with practical lessons.',
+  shortDescription: 'Build a strong foundation in everyday English with practical lessons.',
   tutor: 'Sarah Johnson',
   lessons: 24,
   duration: '8 weeks',
   rating: 4.8,
+  reviewCount: 1240,
   price: 89,
   category: 'General English',
 }

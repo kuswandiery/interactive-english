@@ -1,15 +1,31 @@
+export interface CourseModule {
+  title: string
+  lessons: string[]
+}
+
 export interface CourseData {
   id: string
+  slug: string
   title: string
-  level: string
   description: string
+  shortDescription: string
+  image?: string
+  level: string
+  category: string
   tutor: string
+  tutorRole?: string
   rating: number
+  reviewCount: number
   duration: string
   lessons: number
   price: number
-  category: string
-  image?: string
+  originalPrice?: number
+  popular?: boolean
+  students?: number
+  features: string[]
+  learningOutcomes: string[]
+  requirements: string[]
+  curriculum: CourseModule[]
 }
 
 export interface TutorData {

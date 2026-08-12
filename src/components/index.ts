@@ -23,3 +23,4 @@ export { ProgressCard } from '@/components/dashboard/ProgressCard'
 export { StatCard } from '@/components/dashboard/StatCard'
 
 export { Accordion } from '@/components/ui/Accordion'
+export { Breadcrumb } from '@/components/ui/Breadcrumb'
