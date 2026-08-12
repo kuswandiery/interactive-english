@@ -94,55 +94,77 @@ Do not modify these files unless the user explicitly asks you to modify them.
 
 Build the application incrementally.
 
-Recommended order:
+**AGENT.md is the primary reference for the technical implementation order.**
+The roadmap in README.md is synchronized with this reference.
+Sequences in other documents (e.g. README phase grouping) should be read through the lens of this order to avoid conflicts.
 
-## Phase 1
+## Key Development Principles
 
-Project setup and foundation.
+### Frontend-First with Mock Data
 
-## Phase 2
+- Phases 1–11 are the **frontend**, built with **mock data**.
+- Store sample data under `src/data` (courses, tutors, quiz, testimonial, certificate).
+- The standalone frontend does not yet call a server.
+
+### Backend After Frontend
+
+- Backend (Node.js + Express REST API), **server-side authentication**, and PostgreSQL are done in **Phase 12**, after the frontend is complete.
+- Mock data is later replaced by database data. JWT & role-based access live at this layer.
+
+### Video Learning Placeholder
+
+- Early video learning uses **placeholder/mock video**.
+- Real/streamed video is integrated in Phase 12 or the Advanced Features phase.
+
+## Recommended Order
+
+### Phase 1
+
+Project setup and foundation (React + Vite + TypeScript + Tailwind, `src/` structure).
+
+### Phase 2
 
 Design system and reusable UI components.
 
-## Phase 3
+### Phase 3
 
 Public homepage.
 
-## Phase 4
+### Phase 4
 
 Courses and course detail pages.
 
-## Phase 5
+### Phase 5
 
-Tutors, pricing, FAQ, and contact.
+Tutors, pricing, FAQ, about, contact, and **Blog**.
 
-## Phase 6
+### Phase 6
 
-Authentication.
+Authentication (frontend UI: login, register, logout, protected routes).
 
-## Phase 7
+### Phase 7
 
 Student dashboard.
 
-## Phase 8
+### Phase 8
 
-Lessons and learning system.
+Lessons and learning system (with video placeholder).
 
-## Phase 9
+### Phase 9
 
 Quiz and progress tracking.
 
-## Phase 10
+### Phase 10
 
 Certificate system.
 
-## Phase 11
+### Phase 11
 
 Admin dashboard.
 
-## Phase 12
+### Phase 12
 
-Backend and database integration.
+Backend and database integration (Express REST API, PostgreSQL, server-side auth).
 
 Do not skip directly to advanced features unless instructed.
 
@@ -367,6 +389,8 @@ Follow ARCHITECTURE.md.
 Do not introduce unnecessary technologies or architecture.
 
 Prefer simple and maintainable solutions.
+
+Honor the **frontend-first with mock data** principle: Phases 1–11 use mock data in `src/data`, and backend/database integration (Phase 12) comes after the frontend is complete. Do not build the backend before the frontend foundation is finished.
 
 ---
 

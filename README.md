@@ -148,7 +148,10 @@ Dokumentasi project terdiri dari:
 
 ## 🚀 Development Roadmap
 
-### Phase 1 — Documentation
+> Referensi utama urutan implementasi teknis adalah **AGENT.md**.
+> Roadmap berikut sinkron dengan 12 fase implementasi di AGENT.md.
+
+### Fase 0 — Dokumentasi
 
 - [x] Product Requirements
 - [x] Design Specification
@@ -158,53 +161,90 @@ Dokumentasi project terdiri dari:
 - [x] Architecture Specification
 - [x] AI Agent Instructions
 
-### Phase 2 — Public Website
+### Fase 1 — Project Setup & Foundation
 
-- [ ] Homepage
-- [ ] Courses
+- [ ] Inisialisasi React + Vite + TypeScript + Tailwind CSS
+- [ ] Struktur folder `src/`
+- [ ] Konfigurasi build & lint dasar
+
+### Fase 2 — Design System & Reusable UI Components
+
+- [ ] Design tokens (warna, tipografi, spacing, radius)
+- [ ] UI primitives (Button, Card, Badge, Input, Select, Modal, Toast, Skeleton)
+- [ ] Ikon Lucide
+
+### Fase 3 — Public Homepage
+
+- [ ] Navbar (sticky + hamburger)
+- [ ] Hero Section
+- [ ] Statistics
+- [ ] Popular Courses
+- [ ] Why Choose Us
+- [ ] Learning Process
+- [ ] Testimonials
+- [ ] Call To Action
+- [ ] Footer
+
+### Fase 4 — Courses & Course Detail
+
+- [ ] Halaman Courses
+- [ ] Filter & Search
 - [ ] Course Detail
+- [ ] Enroll flow dasar
+
+### Fase 5 — Tutors, Pricing, FAQ, About, Contact, Blog
+
 - [ ] Tutors
 - [ ] Pricing
+- [ ] FAQ
 - [ ] About
 - [ ] Contact
-- [ ] FAQ
+- [ ] Blog
 
-### Phase 3 — Authentication
+### Fase 6 — Authentication (Frontend)
 
 - [ ] Login
 - [ ] Register
 - [ ] Logout
-- [ ] User Profile
-- [ ] Role Management
+- [ ] Routing & protected routes (frontend)
 
-### Phase 4 — Student Platform
+### Fase 7 — Student Dashboard
 
-- [ ] Student Dashboard
-- [ ] My Courses
-- [ ] Lessons
-- [ ] Quiz
-- [ ] Progress
-- [ ] Certificates
+- [ ] Sidebar + layout dosen
+- [ ] Dashboard, My Courses, Progress
+- [ ] Profile & Settings
 
-### Phase 5 — Admin Platform
+### Fase 8 — Lessons & Learning System
 
-- [ ] Admin Dashboard
-- [ ] Student Management
-- [ ] Course Management
-- [ ] Lesson Management
-- [ ] Tutor Management
-- [ ] Quiz Management
-- [ ] Reports
+- [ ] Lessons (video placeholder / mock)
+- [ ] Previous / Next lesson
+- [ ] Update progress
 
-### Phase 6 — Advanced Features
+### Fase 9 — Quiz & Progress Tracking
 
-- [ ] Payment Gateway
-- [ ] Live Class
-- [ ] Video Learning
-- [ ] Notifications
-- [ ] Chat
-- [ ] AI English Tutor
-- [ ] Subscription System
+- [ ] Quiz (multiple choice, true/false)
+- [ ] Score, passing 70%, retry
+- [ ] Progress tracking
+
+### Fase 10 — Certificate System
+
+- [ ] Certificate UI (mock)
+
+### Fase 11 — Admin Dashboard
+
+- [ ] AdminSidebar + DataTable
+- [ ] Manajemen siswa, course, lesson, tutor, quiz, certificate, reports
+
+### Fase 12 — Backend & Database Integration
+
+- [ ] Node.js + Express.js REST API
+- [ ] PostgreSQL
+- [ ] Authentication server-side (JWT, hashing, role-based)
+- [ ] Integrasi mock data → database
+
+> **Catatan sinkronisasi:** Fase-fase di atas adalah urutan referensi.
+> Fase 1–11 adalah **frontend** (menggunakan mock data).
+> Fase 12 adalah **backend & database** yang dikerjakan setelah frontend selesai.
 
 ---
 
@@ -216,6 +256,28 @@ English Academy harus dapat digunakan pada:
 - Laptop
 - Tablet
 - Mobile
+
+---
+
+## 📌 Development Strategy
+
+Agar pembangunan aman dan bertahap, fase-fase **frontend dikerjakan lebih dulu** menggunakan **mock data lokal**:
+
+- Direktori `src/data` berisi data contoh (courses, tutors, quiz, testimonial).
+- **Backend (Node.js + Express REST API), authentication server-side, dan PostgreSQL diintegrasikan setelah frontend selesai** (Fase 12).
+- **Video learning pada tahap awal menggunakan placeholder/mock video**, diganti video asli pada Fase 12 atau fase Advanced Features.
+
+### Advanced Features (Pasca Frontend & Backend Dasar)
+
+Dikerjakan setelah infrastruktur inti selesai:
+
+- Payment Gateway
+- Live Class
+- Video Learning (file asli / streaming)
+- Notifications
+- Chat
+- AI English Tutor
+- Subscription System
 
 ---
 
