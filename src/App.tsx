@@ -3,6 +3,8 @@ import { ToastProvider } from '@/components/ui/Toast'
 import { AuthProvider } from '@/context/AuthContext'
 import { LearningProvider } from '@/context/LearningContext'
 import { QuizProvider } from '@/context/QuizContext'
+import { ProfileProvider } from '@/context/ProfileContext'
+import { SettingsProvider } from '@/context/SettingsContext'
 
 export default function App() {
   return (
@@ -10,7 +12,11 @@ export default function App() {
       <AuthProvider>
         <LearningProvider>
           <QuizProvider>
-            <AppRouter />
+            <ProfileProvider>
+              <SettingsProvider>
+                <AppRouter />
+              </SettingsProvider>
+            </ProfileProvider>
           </QuizProvider>
         </LearningProvider>
       </AuthProvider>

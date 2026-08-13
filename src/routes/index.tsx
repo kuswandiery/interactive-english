@@ -26,6 +26,10 @@ const LearningPlayerPage = lazy(() => import('@/pages/LearningPlayerPage'))
 const StudentQuizPage = lazy(() => import('@/pages/StudentQuizPage'))
 const QuizPlayerPage = lazy(() => import('@/pages/QuizPlayerPage'))
 const QuizResultPage = lazy(() => import('@/pages/QuizResultPage'))
+const StudentProgressPage = lazy(() => import('@/pages/StudentProgressPage'))
+const StudentCertificatesPage = lazy(() => import('@/pages/StudentCertificatesPage'))
+const StudentProfilePage = lazy(() => import('@/pages/StudentProfilePage'))
+const StudentSettingsPage = lazy(() => import('@/pages/StudentSettingsPage'))
 const AdminDashboard = lazy(() => import('@/pages/AdminDashboard'))
 const AccessDeniedPage = lazy(() => import('@/pages/AccessDeniedPage'))
 
@@ -66,6 +70,10 @@ export function AppRouter() {
             <Route path="quiz" element={<StudentQuizPage />} />
             <Route path="quiz/:quizId" element={<QuizPlayerPage />} />
             <Route path="quiz/:quizId/result" element={<QuizResultPage />} />
+            <Route path="progress" element={<StudentProgressPage />} />
+            <Route path="certificates" element={<StudentCertificatesPage />} />
+            <Route path="profile" element={<StudentProfilePage />} />
+            <Route path="settings" element={<StudentSettingsPage />} />
           </Route>
           <Route
             path="admin"

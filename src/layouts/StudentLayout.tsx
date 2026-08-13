@@ -29,10 +29,10 @@ const navItems: NavItem[] = [
   { label: 'My Courses', to: '/student/courses', icon: BookOpen },
   { label: 'Lessons', to: '/student/lessons', icon: PlayCircle },
   { label: 'Quiz', to: '/student/quiz', icon: FileQuestion },
-  { label: 'Progress', icon: BarChart3, soon: true },
-  { label: 'Certificates', icon: Award, soon: true },
-  { label: 'Profile', icon: User, soon: true },
-  { label: 'Settings', icon: Settings, soon: true },
+  { label: 'Progress', to: '/student/progress', icon: BarChart3 },
+  { label: 'Certificates', to: '/student/certificates', icon: Award },
+  { label: 'Profile', to: '/student/profile', icon: User },
+  { label: 'Settings', to: '/student/settings', icon: Settings },
 ]
 
 function SidebarContent() {
