@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { PublicLayout } from '@/layouts/PublicLayout'
 import { StudentLayout } from '@/layouts/StudentLayout'
+import { AdminLayout } from '@/layouts/AdminLayout'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 
 const HomePage = lazy(() => import('@/pages/HomePage'))
@@ -31,6 +32,12 @@ const StudentCertificatesPage = lazy(() => import('@/pages/StudentCertificatesPa
 const StudentProfilePage = lazy(() => import('@/pages/StudentProfilePage'))
 const StudentSettingsPage = lazy(() => import('@/pages/StudentSettingsPage'))
 const AdminDashboard = lazy(() => import('@/pages/AdminDashboard'))
+const AdminStudentsPage = lazy(() => import('@/pages/AdminStudentsPage'))
+const AdminTutorsPage = lazy(() => import('@/pages/AdminTutorsPage'))
+const AdminCoursesPage = lazy(() => import('@/pages/AdminCoursesPage'))
+const AdminCertificatesPage = lazy(() => import('@/pages/AdminCertificatesPage'))
+const AdminReportsPage = lazy(() => import('@/pages/AdminReportsPage'))
+const AdminSettingsPage = lazy(() => import('@/pages/AdminSettingsPage'))
 const AccessDeniedPage = lazy(() => import('@/pages/AccessDeniedPage'))
 
 export function AppRouter() {
@@ -79,10 +86,18 @@ export function AppRouter() {
             path="admin"
             element={
               <ProtectedRoute allowedRoles={['admin']}>
-                <AdminDashboard />
+                <AdminLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route index element={<AdminDashboard />} />
+            <Route path="students" element={<AdminStudentsPage />} />
+            <Route path="tutors" element={<AdminTutorsPage />} />
+            <Route path="courses" element={<AdminCoursesPage />} />
+            <Route path="certificates" element={<AdminCertificatesPage />} />
+            <Route path="reports" element={<AdminReportsPage />} />
+            <Route path="settings" element={<AdminSettingsPage />} />
+          </Route>
         </Route>
       </Routes>
     </Suspense>
