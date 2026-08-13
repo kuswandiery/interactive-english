@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { PublicLayout } from '@/layouts/PublicLayout'
+import { StudentLayout } from '@/layouts/StudentLayout'
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 
 const HomePage = lazy(() => import('@/pages/HomePage'))
@@ -19,6 +20,8 @@ const LoginPage = lazy(() => import('@/pages/LoginPage'))
 const RegisterPage = lazy(() => import('@/pages/RegisterPage'))
 const ForgotPasswordPage = lazy(() => import('@/pages/ForgotPasswordPage'))
 const StudentDashboard = lazy(() => import('@/pages/StudentDashboard'))
+const StudentCoursesPage = lazy(() => import('@/pages/StudentCoursesPage'))
+const StudentLessonsPage = lazy(() => import('@/pages/StudentLessonsPage'))
 const AdminDashboard = lazy(() => import('@/pages/AdminDashboard'))
 const AccessDeniedPage = lazy(() => import('@/pages/AccessDeniedPage'))
 
@@ -48,10 +51,14 @@ export function AppRouter() {
             path="student"
             element={
               <ProtectedRoute allowedRoles={['student']}>
-                <StudentDashboard />
+                <StudentLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route index element={<StudentDashboard />} />
+            <Route path="courses" element={<StudentCoursesPage />} />
+            <Route path="lessons" element={<StudentLessonsPage />} />
+          </Route>
           <Route
             path="admin"
             element={

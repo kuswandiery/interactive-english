@@ -1,46 +1,285 @@
-import { Link } from 'react-router-dom'
-import { GraduationCap, LayoutDashboard, ArrowLeft } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
+import {
+  GraduationCap,
+  BookOpen,
+  PlayCircle,
+  Clock,
+  Award,
+  LayoutDashboard,
+  FileQuestion,
+  CalendarX,
+  BellOff,
+} from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { Card } from '@/components/ui/Card'
+import { StatCard } from '@/components/dashboard/StatCard'
+import { CurrentCourseCard } from '@/components/dashboard/CurrentCourseCard'
+import { UpcomingLessonCard } from '@/components/dashboard/UpcomingLessonCard'
+import { ActivityCard } from '@/components/dashboard/ActivityCard'
+import { ProgressOverview } from '@/components/dashboard/ProgressOverview'
+import { QuickActionCard } from '@/components/dashboard/QuickActionCard'
+import { EmptyState } from '@/components/dashboard/EmptyState'
+import { Skeleton } from '@/components/ui/Skeleton'
+import { CourseCard } from '@/components/course/CourseCard'
 import { useAuth } from '@/context/AuthContext'
+import { studentCourses } from '@/data/studentCourses'
+import { studentActivities } from '@/data/studentActivities'
+import { courses } from '@/data/courses'
+
+const upcomingLessons = [
+  {
+    title: 'Lesson 15: Asking for Directions',
+    course: 'General English',
+    date: 'Tomorrow',
+    time: '9:00 AM',
+  },
+  {
+    title: 'Lesson 10: Extended Speaking',
+    course: 'English Conversation',
+    date: 'Thu, Aug 20',
+    time: '4:00 PM',
+  },
+  {
+    title: 'Lesson 7: Negotiation Skills',
+    course: 'Business English',
+    date: 'Sat, Aug 22',
+    time: '10:30 AM',
+  },
+]
 
 export default function StudentDashboard() {
   const { user } = useAuth()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const t = window.setTimeout(() => setLoading(false), 450)
+    return () => window.clearTimeout(t)
+  }, [])
+
+  const overallProgress = useMemo(() => {
+    if (studentCourses.length === 0) return 0
+    const total = studentCourses.reduce((sum, c) => sum + c.completedLessons, 0)
+    const all = studentCourses.reduce((sum, c) => sum + c.totalLessons, 0)
+    if (all <= 0) return 0
+    return Math.round((total / all) * 100)
+  }, [])
+
+  const totalCompleted = useMemo(
+    () => studentCourses.reduce((sum, c) => sum + c.completedLessons, 0),
+    [],
+  )
+  const totalLessons = useMemo(
+    () => studentCourses.reduce((sum, c) => sum + c.totalLessons, 0),
+    [],
+  )
+
+  const perCourseProgress = useMemo(
+    () =>
+      studentCourses.map((c) => ({
+        title: c.title,
+        completedLessons: c.completedLessons,
+        totalLessons: c.totalLessons,
+        progress: Math.round((c.completedLessons / c.totalLessons) * 100),
+      })),
+    [],
+  )
+
+  const recommended = useMemo(
+    () => courses.filter((c) => !studentCourses.some((s) => s.slug === c.slug)).slice(0, 3),
+    [],
+  )
+
+  const firstName = user?.name?.split(' ')[0] ?? 'Student'
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-10 w-64" />
+        <Skeleton className="h-3 w-96 max-w-full" />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} className="h-24 w-full" />
+          ))}
+        </div>
+        <div className="grid gap-6 lg:grid-cols-3">
+          <Skeleton className="h-72 w-full lg:col-span-2" />
+          <Skeleton className="h-72 w-full" />
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <section className="container-page flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center py-16 text-center">
-      <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
-        <GraduationCap className="h-8 w-8" />
-      </span>
-      <h1 className="mt-6 font-heading text-3xl font-bold text-secondary">
-        Welcome back, {user?.name?.split(' ')[0] ?? 'Student'}!
-      </h1>
-      <p className="mt-3 max-w-md text-muted">Student Dashboard</p>
+    <div className="space-y-6">
+      <section>
+        <h1 className="font-heading text-2xl font-bold text-secondary lg:text-3xl">
+          Welcome back, {firstName}!
+        </h1>
+        <p className="mt-1 text-muted">
+          Keep up the great work. {totalLessons - totalCompleted} lessons remaining to reach your
+          weekly goal.
+        </p>
+      </section>
 
-      <Card className="mt-8 w-full max-w-md p-6">
-        <div className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
-            <LayoutDashboard className="h-6 w-6" />
-          </span>
-          <div className="text-left">
-            <h2 className="font-heading text-lg font-semibold text-secondary">Coming soon</h2>
-            <p className="text-sm text-muted">
-              Your full student dashboard will be available in Phase 7.
-            </p>
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-label="Learning statistics">
+        <StatCard icon={BookOpen} label="Enrolled Courses" value={studentCourses.length} />
+        <StatCard icon={PlayCircle} label="Lessons Completed" value={totalCompleted} />
+        <StatCard icon={Clock} label="Hours Learned" value={28} unit="h" trend={12} />
+        <StatCard icon={Award} label="Certificates" value={1} trend={1} />
+      </section>
+
+      <section aria-label="Quick actions">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <QuickActionCard
+            icon={LayoutDashboard}
+            label="Browse Courses"
+            description="Explore new English courses."
+            to="/courses"
+          />
+          <QuickActionCard
+            icon={PlayCircle}
+            label="Resume Lesson"
+            description="Continue your current lesson."
+            to="/student/lessons"
+          />
+          <QuickActionCard
+            icon={FileQuestion}
+            label="Take a Quiz"
+            description="Test your knowledge."
+            to="/student/lessons"
+          />
+          <QuickActionCard
+            icon={GraduationCap}
+            label="View Certificates"
+            description="See your achievements."
+            to="/student"
+          />
+        </div>
+      </section>
+
+      <section className="grid gap-6 lg:grid-cols-3" aria-label="Courses and progress">
+        <div className="space-y-4 lg:col-span-2">
+          <div className="flex items-center justify-between">
+            <h2 className="font-heading text-xl font-semibold text-secondary">Current Courses</h2>
+            <Button variant="ghost" size="sm">
+              View all
+            </Button>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {studentCourses.length > 0 ? (
+              studentCourses.map((c) => (
+                <CurrentCourseCard
+                  key={c.id}
+                  slug={c.slug}
+                  title={c.title}
+                  level={c.level}
+                  category={c.category}
+                  tutor={c.tutor}
+                  completedLessons={c.completedLessons}
+                  totalLessons={c.totalLessons}
+                  lastLesson={c.lastLesson}
+                />
+              ))
+            ) : (
+              <EmptyState
+                icon={BookOpen}
+                title="No courses enrolled"
+                description="You haven't enrolled in any courses yet. Explore the catalog to get started."
+                actionLabel="Explore Courses"
+                actionTo="/courses"
+              />
+            )}
           </div>
         </div>
-      </Card>
 
-      <div className="mt-8 flex gap-3">
-        <Link to="/courses">
-          <Button variant="outline">Explore Courses</Button>
-        </Link>
-        <Link to="/">
-          <Button>
-            <ArrowLeft className="h-4 w-4" /> Back to Home
+        <ProgressOverview overall={overallProgress} items={perCourseProgress} />
+      </section>
+
+      <section className="grid gap-6 lg:grid-cols-2">
+        <div>
+          <div className="flex items-center justify-between">
+            <h2 className="font-heading text-xl font-semibold text-secondary">Upcoming Lessons</h2>
+            <Button variant="ghost" size="sm">
+              View all
+            </Button>
+          </div>
+          <div className="mt-4 space-y-3">
+            {upcomingLessons.length > 0 ? (
+              upcomingLessons.map((l) => (
+                <UpcomingLessonCard
+                  key={l.title}
+                  title={l.title}
+                  course={l.course}
+                  date={l.date}
+                  time={l.time}
+                />
+              ))
+            ) : (
+              <EmptyState
+                icon={CalendarX}
+                title="No upcoming lessons"
+                description="You have no scheduled lessons. Check back later."
+              />
+            )}
+          </div>
+        </div>
+
+        <div>
+          <h2 className="font-heading text-xl font-semibold text-secondary">Recent Activity</h2>
+          {studentActivities.length > 0 ? (
+            <ul className="mt-4 space-y-3">
+              {studentActivities.map((a) => (
+                <ActivityCard
+                  key={a.id}
+                  title={a.title}
+                  description={a.description}
+                  date={a.date}
+                  type={a.type}
+                />
+              ))}
+            </ul>
+          ) : (
+            <div className="mt-4">
+              <EmptyState
+                icon={BellOff}
+                title="No activities yet"
+                description="Your recent activity will appear here."
+              />
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section>
+        <div className="flex items-center justify-between">
+          <h2 className="font-heading text-xl font-semibold text-secondary">
+            Recommended for You
+          </h2>
+          <Button variant="ghost" size="sm">
+            Browse all
           </Button>
-        </Link>
-      </div>
-    </section>
+        </div>
+        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {recommended.map((c) => (
+            <CourseCard
+              key={c.id}
+              id={c.id}
+              slug={c.slug}
+              title={c.title}
+              level={c.level}
+              shortDescription={c.shortDescription}
+              tutor={c.tutor}
+              lessons={c.lessons}
+              duration={c.duration}
+              rating={c.rating}
+              reviewCount={c.reviewCount}
+              price={c.price}
+              originalPrice={c.originalPrice}
+              category={c.category}
+              popular={c.popular}
+            />
+          ))}
+        </div>
+      </section>
+    </div>
   )
 }
