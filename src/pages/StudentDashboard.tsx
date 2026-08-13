@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   GraduationCap,
   BookOpen,
   PlayCircle,
-  Clock,
-  Award,
   LayoutDashboard,
   FileQuestion,
   CalendarX,
   BellOff,
+  ListChecks,
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { StatCard } from '@/components/dashboard/StatCard'
@@ -20,11 +20,14 @@ import { QuickActionCard } from '@/components/dashboard/QuickActionCard'
 import { EmptyState } from '@/components/dashboard/EmptyState'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { CourseCard } from '@/components/course/CourseCard'
+import { QuizCard } from '@/components/quiz'
 import { useAuth } from '@/context/AuthContext'
 import { useLearning } from '@/context/LearningContext'
+import { useQuiz } from '@/context/QuizContext'
 import { studentCourses } from '@/data/studentCourses'
 import { studentActivities } from '@/data/studentActivities'
 import { courses } from '@/data/courses'
+import { getQuizzesByCourses } from '@/data/quizzes'
 
 const upcomingLessons = [
   {
@@ -49,7 +52,9 @@ const upcomingLessons = [
 
 export default function StudentDashboard() {
   const { user } = useAuth()
+  const navigate = useNavigate()
   const { getCourseProgress, getContinueLesson } = useLearning()
+  const { getQuizStats } = useQuiz()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -93,6 +98,14 @@ export default function StudentDashboard() {
     [],
   )
 
+  const myQuizzes = useMemo(() => getQuizzesByCourses(studentCourses.map((c) => c.slug)), [])
+  const quizStats = useMemo(
+    () => myQuizzes.map((q) => ({ quiz: q, stats: getQuizStats(q.id) })),
+    [myQuizzes, getQuizStats],
+  )
+  const quizzesTaken = quizStats.filter((q) => q.stats.attempts > 0)
+  const quizzesPassed = quizStats.filter((q) => q.stats.passed).length
+
   const firstName = user?.name?.split(' ')[0] ?? 'Student'
 
   if (loading) {
@@ -128,8 +141,8 @@ export default function StudentDashboard() {
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-label="Learning statistics">
         <StatCard icon={BookOpen} label="Enrolled Courses" value={studentCourses.length} />
         <StatCard icon={PlayCircle} label="Lessons Completed" value={totalCompleted} />
-        <StatCard icon={Clock} label="Hours Learned" value={28} unit="h" trend={12} />
-        <StatCard icon={Award} label="Certificates" value={1} trend={1} />
+        <StatCard icon={ListChecks} label="Quizzes Taken" value={quizzesTaken.length} />
+        <StatCard icon={FileQuestion} label="Quizzes Passed" value={quizzesPassed} />
       </section>
 
       <section aria-label="Quick actions">
@@ -150,7 +163,7 @@ export default function StudentDashboard() {
             icon={FileQuestion}
             label="Take a Quiz"
             description="Test your knowledge."
-            to="/student/lessons"
+            to="/student/quiz"
           />
           <QuickActionCard
             icon={GraduationCap}
@@ -260,6 +273,37 @@ export default function StudentDashboard() {
             </div>
           )}
         </div>
+      </section>
+
+      <section>
+        <div className="flex items-center justify-between">
+          <h2 className="font-heading text-xl font-semibold text-secondary">Your Quizzes</h2>
+          <Link to="/student/quiz">
+            <Button variant="ghost" size="sm">
+              View all
+            </Button>
+          </Link>
+        </div>
+        {quizStats.length > 0 ? (
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {quizStats.map(({ quiz, stats }) => (
+              <QuizCard
+                key={quiz.id}
+                quiz={quiz}
+                stats={stats}
+                onStart={(id) => navigate(`/student/quiz/${id}`)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="mt-4">
+            <EmptyState
+              icon={FileQuestion}
+              title="No quizzes yet"
+              description="Quizzes tied to your courses will appear here."
+            />
+          </div>
+        )}
       </section>
 
       <section>

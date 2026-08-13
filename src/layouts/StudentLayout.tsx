@@ -28,7 +28,7 @@ const navItems: NavItem[] = [
   { label: 'Dashboard', to: '/student', icon: LayoutDashboard },
   { label: 'My Courses', to: '/student/courses', icon: BookOpen },
   { label: 'Lessons', to: '/student/lessons', icon: PlayCircle },
-  { label: 'Quiz', icon: FileQuestion, soon: true },
+  { label: 'Quiz', to: '/student/quiz', icon: FileQuestion },
   { label: 'Progress', icon: BarChart3, soon: true },
   { label: 'Certificates', icon: Award, soon: true },
   { label: 'Profile', icon: User, soon: true },
