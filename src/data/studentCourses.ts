@@ -3,9 +3,11 @@ import type { StudentCourse } from '@/types/student'
 /**
  * MOCK STUDENT DATA
  *
- * Courses the demo student has enrolled in, with progress derived from
- * completed lessons. Used only for the Phase 7 frontend prototype.
- * Real enrollment data comes from the backend in Phase 12.
+ * This is mock data and will be replaced in Phase 12.
+ *
+ * Courses the demo student has enrolled in. `completedLessons` and
+ * `totalLessons` are kept in sync with the mock lesson list so the progress
+ * calculation is consistent across the dashboard and the learning player.
  */
 export const studentCourses: StudentCourse[] = [
   {
@@ -15,10 +17,10 @@ export const studentCourses: StudentCourse[] = [
     level: 'Beginner',
     category: 'General English',
     tutor: 'Sarah Johnson',
-    completedLessons: 14,
-    totalLessons: 24,
-    lastLesson: 'Lesson 14: Using Time Expressions',
-    nextLesson: 'Lesson 15: Asking for Directions',
+    completedLessons: 5,
+    totalLessons: 8,
+    lastLesson: 'Lesson 5: Talking About Your Day',
+    nextLesson: 'Lesson 6: Ordering Food & Asking Directions',
     enrolledDate: 'Jan 12, 2026',
   },
   {
@@ -28,10 +30,10 @@ export const studentCourses: StudentCourse[] = [
     level: 'Intermediate',
     category: 'Conversation',
     tutor: 'Michael Chen',
-    completedLessons: 9,
-    totalLessons: 18,
-    lastLesson: 'Lesson 9: Group Discussion',
-    nextLesson: 'Lesson 10: Extended Speaking',
+    completedLessons: 3,
+    totalLessons: 6,
+    lastLesson: 'Lesson 3: Describing Experiences',
+    nextLesson: 'Lesson 4: At the Workplace',
     enrolledDate: 'Feb 02, 2026',
   },
   {
@@ -41,10 +43,10 @@ export const studentCourses: StudentCourse[] = [
     level: 'Upper Intermediate',
     category: 'Business',
     tutor: 'Emily Davis',
-    completedLessons: 6,
-    totalLessons: 30,
-    lastLesson: 'Lesson 6: Handling Q&A',
-    nextLesson: 'Lesson 7: Negotiation Skills',
+    completedLessons: 2,
+    totalLessons: 6,
+    lastLesson: 'Lesson 2: Writing Professional Emails',
+    nextLesson: 'Lesson 3: Workplace Communication',
     enrolledDate: 'Mar 10, 2026',
   },
 ]

@@ -22,6 +22,7 @@ export interface StudentLesson {
   moduleTitle: string
   title: string
   duration: string
+  description: string
   status: LessonStatus
   order: number
 }

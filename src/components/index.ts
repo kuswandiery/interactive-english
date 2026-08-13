@@ -32,6 +32,12 @@ export { ProgressOverview } from '@/components/dashboard/ProgressOverview'
 export { QuickActionCard } from '@/components/dashboard/QuickActionCard'
 export { EmptyState } from '@/components/dashboard/EmptyState'
 
+export { VideoPlayer } from '@/components/learning/VideoPlayer'
+export { LessonSidebar } from '@/components/learning/LessonSidebar'
+export { LessonNavigation } from '@/components/learning/LessonNavigation'
+export { RecommendedLessonCard } from '@/components/learning/RecommendedLessonCard'
+export { LearningStats } from '@/components/learning/LearningStats'
+
 export { Accordion } from '@/components/ui/Accordion'
 export { Breadcrumb } from '@/components/ui/Breadcrumb'
 export { SectionHeader } from '@/components/ui/SectionHeader'

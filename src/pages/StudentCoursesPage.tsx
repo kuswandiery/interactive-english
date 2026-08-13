@@ -4,6 +4,7 @@ import { SearchBar } from '@/components/ui/SearchBar'
 import { Filter, type FilterItem } from '@/components/ui/Filter'
 import { CurrentCourseCard } from '@/components/dashboard/CurrentCourseCard'
 import { EmptyState } from '@/components/dashboard/EmptyState'
+import { useLearning } from '@/context/LearningContext'
 import { studentCourses } from '@/data/studentCourses'
 
 const filterItems: FilterItem[] = [
@@ -33,6 +34,7 @@ export default function StudentCoursesPage() {
     level: '',
     category: '',
   })
+  const { getCourseProgress, getContinueLesson } = useLearning()
 
   const setFilter = (kind: string, value: string) =>
     setFilters((f) => ({ ...f, [kind]: value }))
@@ -98,19 +100,28 @@ export default function StudentCoursesPage() {
           className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
           aria-label="My enrolled courses"
         >
-          {filtered.map((c) => (
-            <CurrentCourseCard
-              key={c.id}
-              slug={c.slug}
-              title={c.title}
-              level={c.level}
-              category={c.category}
-              tutor={c.tutor}
-              completedLessons={c.completedLessons}
-              totalLessons={c.totalLessons}
-              lastLesson={c.lastLesson}
-            />
-          ))}
+          {filtered.map((c) => {
+            const progress = getCourseProgress(c.slug)
+            const continueLesson = getContinueLesson(c.slug)
+            return (
+              <CurrentCourseCard
+                key={c.id}
+                slug={c.slug}
+                title={c.title}
+                level={c.level}
+                category={c.category}
+                tutor={c.tutor}
+                completedLessons={progress.completed}
+                totalLessons={progress.total}
+                lastLesson={c.lastLesson}
+                continueTo={
+                  continueLesson
+                    ? `/student/learn/${c.slug}/${continueLesson.id}`
+                    : undefined
+                }
+              />
+            )
+          })}
         </section>
       )}
     </div>

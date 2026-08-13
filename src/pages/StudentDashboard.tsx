@@ -21,6 +21,7 @@ import { EmptyState } from '@/components/dashboard/EmptyState'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { CourseCard } from '@/components/course/CourseCard'
 import { useAuth } from '@/context/AuthContext'
+import { useLearning } from '@/context/LearningContext'
 import { studentCourses } from '@/data/studentCourses'
 import { studentActivities } from '@/data/studentActivities'
 import { courses } from '@/data/courses'
@@ -48,6 +49,7 @@ const upcomingLessons = [
 
 export default function StudentDashboard() {
   const { user } = useAuth()
+  const { getCourseProgress, getContinueLesson } = useLearning()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -56,31 +58,34 @@ export default function StudentDashboard() {
   }, [])
 
   const overallProgress = useMemo(() => {
-    if (studentCourses.length === 0) return 0
-    const total = studentCourses.reduce((sum, c) => sum + c.completedLessons, 0)
-    const all = studentCourses.reduce((sum, c) => sum + c.totalLessons, 0)
+    const results = studentCourses.map((c) => getCourseProgress(c.slug))
+    const total = results.reduce((sum, r) => sum + r.completed, 0)
+    const all = results.reduce((sum, r) => sum + r.total, 0)
     if (all <= 0) return 0
     return Math.round((total / all) * 100)
-  }, [])
+  }, [getCourseProgress])
 
   const totalCompleted = useMemo(
-    () => studentCourses.reduce((sum, c) => sum + c.completedLessons, 0),
-    [],
+    () => studentCourses.reduce((sum, c) => sum + getCourseProgress(c.slug).completed, 0),
+    [getCourseProgress],
   )
   const totalLessons = useMemo(
-    () => studentCourses.reduce((sum, c) => sum + c.totalLessons, 0),
-    [],
+    () => studentCourses.reduce((sum, c) => sum + getCourseProgress(c.slug).total, 0),
+    [getCourseProgress],
   )
 
   const perCourseProgress = useMemo(
     () =>
-      studentCourses.map((c) => ({
-        title: c.title,
-        completedLessons: c.completedLessons,
-        totalLessons: c.totalLessons,
-        progress: Math.round((c.completedLessons / c.totalLessons) * 100),
-      })),
-    [],
+      studentCourses.map((c) => {
+        const p = getCourseProgress(c.slug)
+        return {
+          title: c.title,
+          completedLessons: p.completed,
+          totalLessons: p.total,
+          progress: p.progress,
+        }
+      }),
+    [getCourseProgress],
   )
 
   const recommended = useMemo(
@@ -166,19 +171,27 @@ export default function StudentDashboard() {
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             {studentCourses.length > 0 ? (
-              studentCourses.map((c) => (
-                <CurrentCourseCard
-                  key={c.id}
-                  slug={c.slug}
-                  title={c.title}
-                  level={c.level}
-                  category={c.category}
-                  tutor={c.tutor}
-                  completedLessons={c.completedLessons}
-                  totalLessons={c.totalLessons}
-                  lastLesson={c.lastLesson}
-                />
-              ))
+              studentCourses.map((c) => {
+                const continueLesson = getContinueLesson(c.slug)
+                return (
+                  <CurrentCourseCard
+                    key={c.id}
+                    slug={c.slug}
+                    title={c.title}
+                    level={c.level}
+                    category={c.category}
+                    tutor={c.tutor}
+                    completedLessons={getCourseProgress(c.slug).completed}
+                    totalLessons={getCourseProgress(c.slug).total}
+                    lastLesson={c.lastLesson}
+                    continueTo={
+                      continueLesson
+                        ? `/student/learn/${c.slug}/${continueLesson.id}`
+                        : undefined
+                    }
+                  />
+                )
+              })
             ) : (
               <EmptyState
                 icon={BookOpen}

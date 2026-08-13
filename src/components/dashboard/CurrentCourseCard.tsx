@@ -18,6 +18,7 @@ interface CurrentCourseCardProps {
   completedLessons: number
   totalLessons: number
   lastLesson: string
+  continueTo?: string
 }
 
 export function CurrentCourseCard({
@@ -29,6 +30,7 @@ export function CurrentCourseCard({
   completedLessons,
   totalLessons,
   lastLesson,
+  continueTo,
 }: CurrentCourseCardProps) {
   const progress = getProgress(completedLessons, totalLessons)
 
@@ -67,7 +69,10 @@ export function CurrentCourseCard({
         <span className="truncate">Last lesson: {lastLesson}</span>
       </div>
 
-      <Link to={`/student/lessons?course=${slug}`} className="mt-5 block">
+      <Link
+        to={continueTo ?? `/student/lessons?course=${slug}`}
+        className="mt-5 block"
+      >
         <Button className="w-full">
           <PlayCircle className="h-4 w-4" /> Continue Learning
         </Button>

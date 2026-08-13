@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import {
   PlayCircle,
   FileText,
@@ -15,26 +15,15 @@ import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { EmptyState } from '@/components/dashboard/EmptyState'
 import { useToast } from '@/components/ui/Toast'
+import { useLearning } from '@/context/LearningContext'
 import { studentLessons } from '@/data/studentLessons'
-import type { StudentLesson } from '@/types/student'
 import { cn } from '@/utils'
-
-type LessonStatus = StudentLesson['status']
-
-interface LessonState {
-  id: string
-  title: string
-  status: LessonStatus
-}
 
 export default function StudentLessonsPage() {
   const [params] = useSearchParams()
   const toast = useToast()
   const courseFilter = params.get('course') ?? ''
-
-  const [lessons, setLessons] = useState<LessonState[]>(() =>
-    studentLessons.map((l) => ({ id: l.id, title: l.title, status: l.status })),
-  )
+  const { getStatus, toggleComplete, getCourseLessons } = useLearning()
 
   const [selectedId, setSelectedId] = useState<string>(() => {
     const pool = studentLessons
@@ -46,30 +35,26 @@ export default function StudentLessonsPage() {
   })
 
   const selected = studentLessons.find((l) => l.id === selectedId)
-  const selectedState = lessons.find((l) => l.id === selectedId)
+  const selectedStatus = selected ? getStatus(selected.id) : undefined
 
   const list = useMemo(() => {
-    const base = courseFilter ? studentLessons.filter((l) => l.courseSlug === courseFilter) : studentLessons
-    return [...base].sort((a, b) => a.order - b.order)
-  }, [courseFilter])
+    const base = courseFilter
+      ? getCourseLessons(courseFilter)
+      : [...studentLessons].sort((a, b) => a.order - b.order)
+    return base
+  }, [courseFilter, getCourseLessons])
 
   const currentIndex = list.findIndex((l) => l.id === selectedId)
   const prevLesson = currentIndex > 0 ? list[currentIndex - 1] : undefined
-  const nextLesson = currentIndex >= 0 && currentIndex < list.length - 1 ? list[currentIndex + 1] : undefined
+  const nextLesson =
+    currentIndex >= 0 && currentIndex < list.length - 1 ? list[currentIndex + 1] : undefined
 
-  const toggleComplete = () => {
+  const toggle = () => {
     if (!selected) return
-    setLessons((prev) =>
-      prev.map((l) =>
-        l.id === selected.id
-          ? { ...l, status: l.status === 'completed' ? 'in-progress' : 'completed' }
-          : l,
-      ),
-    )
-    const nowCompleted = selectedState?.status !== 'completed'
+    const now = toggleComplete(selected.id)
     toast.success(
-      nowCompleted
-        ? 'Lesson marked as completed.'
+      now === 'completed'
+        ? 'Lesson completed successfully.'
         : 'Lesson marked as in progress.',
       selected.title,
     )
@@ -105,7 +90,7 @@ export default function StudentLessonsPage() {
           </h2>
           <ul className="space-y-2">
             {list.map((lesson) => {
-              const state = lessons.find((l) => l.id === lesson.id)
+              const status = getStatus(lesson.id)
               const isActive = lesson.id === selectedId
               return (
                 <li key={lesson.id}>
@@ -118,22 +103,22 @@ export default function StudentLessonsPage() {
                       isActive
                         ? 'border-primary bg-primary/5'
                         : 'border-slate-200 bg-white hover:border-slate-300',
-                      state?.status === 'locked' && 'opacity-60',
+                      status === 'locked' && 'opacity-60',
                     )}
                   >
                     <span
                       className={cn(
                         'mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full',
-                        state?.status === 'completed'
+                        status === 'completed'
                           ? 'bg-success/15 text-success'
-                          : state?.status === 'in-progress'
+                          : status === 'in-progress'
                             ? 'bg-primary/10 text-primary'
                             : 'bg-slate-100 text-slate-400',
                       )}
                     >
-                      {state?.status === 'completed' ? (
+                      {status === 'completed' ? (
                         <CheckCircle2 className="h-4 w-4" />
-                      ) : state?.status === 'in-progress' ? (
+                      ) : status === 'in-progress' ? (
                         <PlayCircle className="h-4 w-4" />
                       ) : (
                         <Lock className="h-4 w-4" />
@@ -153,22 +138,22 @@ export default function StudentLessonsPage() {
         </aside>
 
         <section aria-label="Lesson player">
-          {selected && selectedState ? (
+          {selected && selectedStatus ? (
             <Card className="p-5 sm:p-6">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="outline">{selected.courseTitle}</Badge>
                 <Badge
                   variant={
-                    selectedState.status === 'completed'
+                    selectedStatus === 'completed'
                       ? 'success'
-                      : selectedState.status === 'in-progress'
+                      : selectedStatus === 'in-progress'
                         ? 'primary'
                         : 'muted'
                   }
                 >
-                  {selectedState.status === 'completed'
+                  {selectedStatus === 'completed'
                     ? 'Completed'
-                    : selectedState.status === 'in-progress'
+                    : selectedStatus === 'in-progress'
                       ? 'In Progress'
                       : 'Locked'}
                 </Badge>
@@ -188,7 +173,7 @@ export default function StudentLessonsPage() {
                   <PlayCircle className="h-8 w-8" />
                 </button>
                 <span className="sr-only">
-                  Video placeholder{(selectedState.status === 'locked' ? ' · locked' : '')}
+                  Video placeholder{selectedStatus === 'locked' ? ' · locked' : ''}
                 </span>
               </div>
 
@@ -196,13 +181,19 @@ export default function StudentLessonsPage() {
                 <p className="flex items-center gap-2 text-sm text-muted">
                   <FileText className="h-4 w-4" /> {selected.duration} · Downloadable material
                 </p>
-                <Button
-                  variant={selectedState.status === 'completed' ? 'outline' : 'primary'}
-                  onClick={toggleComplete}
-                >
-                  <CheckCircle2 className="h-4 w-4" />
-                  {selectedState.status === 'completed' ? 'Mark as In Progress' : 'Mark as Completed'}
-                </Button>
+                <div className="flex gap-2">
+                  <Button variant="outline" onClick={toggle}>
+                    <CheckCircle2 className="h-4 w-4" />
+                    {selectedStatus === 'completed'
+                      ? 'Mark as In Progress'
+                      : 'Mark as Completed'}
+                  </Button>
+                  <Link to={`/student/learn/${selected.courseSlug}/${selected.id}`}>
+                    <Button>
+                      <PlayCircle className="h-4 w-4" /> Open
+                    </Button>
+                  </Link>
+                </div>
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3 border-t border-slate-100 pt-5">
