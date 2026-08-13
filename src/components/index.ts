@@ -15,6 +15,10 @@ export { Filter } from '@/components/ui/Filter'
 export { Navbar } from '@/components/ui/Navbar'
 export { Footer } from '@/components/ui/Footer'
 
+export { AuthLayout } from '@/components/auth/AuthLayout'
+export { PasswordInput } from '@/components/auth/PasswordInput'
+export { ProtectedRoute } from '@/components/auth/ProtectedRoute'
+
 export { CourseCard, CourseGridSkeleton } from '@/components/course/CourseCard'
 export { TutorCard } from '@/components/tutor/TutorCard'
 export { TestimonialCard } from '@/components/testimonial/TestimonialCard'

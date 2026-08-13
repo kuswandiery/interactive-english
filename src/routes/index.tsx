@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { PublicLayout } from '@/layouts/PublicLayout'
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 
 const HomePage = lazy(() => import('@/pages/HomePage'))
 const ComponentsShowcase = lazy(() => import('@/pages/ComponentsShowcase'))
@@ -14,9 +15,12 @@ const AboutPage = lazy(() => import('@/pages/AboutPage'))
 const ContactPage = lazy(() => import('@/pages/ContactPage'))
 const BlogPage = lazy(() => import('@/pages/BlogPage'))
 const BlogDetailPage = lazy(() => import('@/pages/BlogDetailPage'))
-const Placeholder = lazy(() => import('@/pages/Placeholder'))
-
-const placeholderPaths = ['login', 'register']
+const LoginPage = lazy(() => import('@/pages/LoginPage'))
+const RegisterPage = lazy(() => import('@/pages/RegisterPage'))
+const ForgotPasswordPage = lazy(() => import('@/pages/ForgotPasswordPage'))
+const StudentDashboard = lazy(() => import('@/pages/StudentDashboard'))
+const AdminDashboard = lazy(() => import('@/pages/AdminDashboard'))
+const AccessDeniedPage = lazy(() => import('@/pages/AccessDeniedPage'))
 
 export function AppRouter() {
   return (
@@ -35,9 +39,27 @@ export function AppRouter() {
           <Route path="contact" element={<ContactPage />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="blog/:slug" element={<BlogDetailPage />} />
-          {placeholderPaths.map((path) => (
-            <Route key={path} path={path} element={<Placeholder />} />
-          ))}
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
+          <Route path="forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="access-denied" element={<AccessDeniedPage />} />
+
+          <Route
+            path="student"
+            element={
+              <ProtectedRoute allowedRoles={['student']}>
+                <StudentDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="admin"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
     </Suspense>

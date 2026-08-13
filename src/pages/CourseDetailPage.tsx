@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import {
   Star,
   Clock,
@@ -19,11 +19,14 @@ import { Button } from '@/components/ui/Button'
 import { Accordion } from '@/components/ui/Accordion'
 import { CourseCard } from '@/components/course/CourseCard'
 import { useToast } from '@/components/ui/Toast'
+import { useAuth } from '@/context/AuthContext'
 import { courses } from '@/data/courses'
 
 export default function CourseDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const toast = useToast()
+  const navigate = useNavigate()
+  const { isAuthenticated } = useAuth()
   const [enrolled, setEnrolled] = useState(false)
 
   const course = courses.find((c) => c.slug === slug)
@@ -74,6 +77,11 @@ export default function CourseDetailPage() {
   }))
 
   const handleEnroll = () => {
+    if (!isAuthenticated) {
+      toast.info('Please sign in to enroll in this course.')
+      navigate('/login', { state: { from: `/courses/${course.slug}` } })
+      return
+    }
     if (!enrolled) {
       setEnrolled(true)
       toast.success('Course added to My Courses.')

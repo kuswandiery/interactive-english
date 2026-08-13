@@ -1,7 +1,9 @@
 import { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
-import { GraduationCap, Menu, X } from 'lucide-react'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { GraduationCap, Menu, X, LogOut, LayoutDashboard } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { useAuth } from '@/context/AuthContext'
+import { useToast } from '@/components/ui/Toast'
 
 const navLinks = [
   { label: 'Home', to: '/' },
@@ -16,6 +18,18 @@ const navLinks = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
+  const { user, isAuthenticated, role, logout } = useAuth()
+  const navigate = useNavigate()
+  const toast = useToast()
+
+  const dashboardTo = role === 'admin' ? '/admin' : '/student'
+
+  const handleLogout = () => {
+    logout()
+    toast.info('You have been signed out.')
+    setOpen(false)
+    navigate('/', { replace: true })
+  }
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `text-sm font-medium transition-colors ${
@@ -43,17 +57,46 @@ export function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Link to="/login">
-            <Button variant="ghost">Login</Button>
-          </Link>
-          <Link to="/register">
-            <Button>Get Started</Button>
-          </Link>
+          {isAuthenticated && user ? (
+            <>
+              <Link
+                to={dashboardTo}
+                className="flex items-center gap-2 text-sm font-medium text-secondary transition-colors hover:text-primary"
+              >
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                  {user.name
+                    .split(' ')
+                    .map((p) => p[0])
+                    .slice(0, 2)
+                    .join('')}
+                </span>
+                <span className="max-w-[140px] truncate">{user.name}</span>
+              </Link>
+              <Link to={dashboardTo}>
+                <Button variant="outline" size="sm">
+                  <LayoutDashboard className="h-4 w-4" /> Dashboard
+                </Button>
+              </Link>
+              <Button variant="ghost" size="sm" onClick={handleLogout}>
+                <LogOut className="h-4 w-4" /> Sign Out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link to="/login">
+                <Button variant="ghost">Sign In</Button>
+              </Link>
+              <Link to="/register">
+                <Button>Get Started</Button>
+              </Link>
+            </>
+          )}
         </div>
 
         <button
           type="button"
           aria-label="Toggle menu"
+          aria-expanded={open}
           className="flex h-10 w-10 items-center justify-center rounded-md text-secondary md:hidden"
           onClick={() => setOpen((v) => !v)}
         >
@@ -74,15 +117,40 @@ export function Navbar() {
                 {link.label}
               </NavLink>
             ))}
-            <div className="flex gap-3 pt-2">
-              <Link to="/login" className="flex-1">
-                <Button variant="outline" className="w-full">
-                  Login
-                </Button>
-              </Link>
-              <Link to="/register" className="flex-1">
-                <Button className="w-full">Get Started</Button>
-              </Link>
+            <div className="border-t border-slate-100 pt-3">
+              {isAuthenticated && user ? (
+                <>
+                  <div className="flex items-center gap-2 px-1 pb-3">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                      {user.name
+                        .split(' ')
+                        .map((p) => p[0])
+                        .slice(0, 2)
+                        .join('')}
+                    </span>
+                    <span className="text-sm font-medium text-secondary">{user.name}</span>
+                  </div>
+                  <Link to={dashboardTo} className="block w-full" onClick={() => setOpen(false)}>
+                    <Button variant="outline" className="w-full">
+                      <LayoutDashboard className="h-4 w-4" /> Dashboard
+                    </Button>
+                  </Link>
+                  <Button variant="ghost" className="mt-2 w-full" onClick={handleLogout}>
+                    <LogOut className="h-4 w-4" /> Sign Out
+                  </Button>
+                </>
+              ) : (
+                <div className="flex gap-3 pt-2">
+                  <Link to="/login" className="flex-1">
+                    <Button variant="outline" className="w-full">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link to="/register" className="flex-1">
+                    <Button className="w-full">Get Started</Button>
+                  </Link>
+                </div>
+              )}
             </div>
           </nav>
         </div>
